@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 리스트</title>
+</head>
+<style>
+  .layout {
+  width : 500px;
+  margin : 0 auto;
+  margin- top : 40px;
+  }
+</style>
+<body>
+  <div class="layout">
+    <h1>글리스트</h1>
+    <a th:href="@{/board/write}"><button>글쓰기</button></a>
+    <hr>
+    <table>
+      <thead>
+        <tr>
+          <th>글번호</th>
+          <th>제목</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="board2 : ${list}">
+          <td th:text="${board2.id}"></td>
+          <td>
+            <a th:text="${board2.title}" th:href="@{/board/view(id=${board2.id})}"></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr>
+      <th:block  th:each="page : ${#numbers.sequence(startPage, endPage)}">
+        <a th:if="${page != currentPage}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+        <strong th:if="${page == currentPage}" th:text="${page}"></strong>
+      </th:block>
+    <form th:action="@{/board/list}" method="get">
+      <input type="text" name="searchKeyword">
+      <button type="submit">검색</button>
+    </form>
+  </div>
+</body>
+</html>
